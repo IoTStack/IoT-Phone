@@ -10,6 +10,7 @@ import React, {
   StyleSheet,
   ScrollView,
   Text,
+  Switch,
   View,
   DeviceEventEmitter
 } from 'react-native';
@@ -22,9 +23,15 @@ var {
     Magnetometer
 } = require('NativeModules');
 
+// Set timing intervals
 Accelerometer.setAccelerometerUpdateInterval(0.1); // in seconds
 Gyroscope.setGyroUpdateInterval(0.1);
 Magnetometer.setMagnetometerUpdateInterval(0.1);
+
+// Set updates
+Gyroscope.startGyroUpdates();
+Accelerometer.startAccelerometerUpdates();
+Magnetometer.startMagnetometerUpdates();
 
 var AccelerometerManager = React.createClass({
   getInitialState: function () {
@@ -32,12 +39,11 @@ var AccelerometerManager = React.createClass({
       x: 0,
       y: 0,
       z: 0,
-      gyro: false
+      gyro: true
     }
   },
   componentDidMount: function () {
     DeviceEventEmitter.addListener('AccelerationData', function (data) {
-      console.log('data:::::::', data);
       this.setState({
         x: data.acceleration.x.toFixed(5),
         y: data.acceleration.y.toFixed(5),
@@ -71,9 +77,9 @@ var AccelerometerManager = React.createClass({
         <Text>y: {this.state.y}</Text>
         <Text>z: {this.state.z}</Text>
         {
-          (this.state.gyro) ?
-          <Button style={{color: 'red', margin: 20}} onPress={this.handleStop}>Stop</Button> :
-          <Button style={{color: 'green', margin: 20}} onPress={this.handleStart}>Start</Button>
+          <Switch 
+          onValueChange={(value) => (value) ? this.handleStart(): this.handleStop()}
+          value={this.state.gyro} />
         }
       </View>
     );
@@ -86,7 +92,7 @@ var GyroscopeManager = React.createClass({
       x: 0,
       y: 0,
       z: 0,
-      gyro: false
+      gyro: true
     }
   },
   componentDidMount: function () {
@@ -114,7 +120,6 @@ var GyroscopeManager = React.createClass({
     });
   },
   render: function() {
-    console.log(this.state);
     return (
       <View style={styles.widget}>
         <Text style={styles.welcome}>
@@ -124,10 +129,11 @@ var GyroscopeManager = React.createClass({
         <Text>y: {this.state.y}</Text>
         <Text>z: {this.state.z}</Text>
         {
-          (this.state.gyro) ?
-          <Button style={{color: 'red', margin: 20}} onPress={this.handleStop}>Stop</Button> :
-          <Button style={{color: 'green', margin: 20}} onPress={this.handleStart}>Start</Button>
-        }
+          <Switch 
+          onValueChange={(value) => (value) ? this.handleStart(): this.handleStop()}
+          value={this.state.gyro} />
+
+         }
       </View>
     );
   }
@@ -139,7 +145,7 @@ var MagnetometerManager = React.createClass({
       x: 0,
       y: 0,
       z: 0,
-      gyro: false
+      gyro: true
     }
   },
   componentDidMount: function () {
@@ -177,9 +183,9 @@ var MagnetometerManager = React.createClass({
         <Text>y: {this.state.y}</Text>
         <Text>z: {this.state.z}</Text>
         {
-          (this.state.gyro) ?
-          <Button style={{color: 'red', margin: 20}} onPress={this.handleStop}>Stop</Button> :
-          <Button style={{color: 'green', margin: 20}} onPress={this.handleStart}>Start</Button>
+          <Switch 
+          onValueChange={(value) => (value) ? this.handleStart(): this.handleStop()}
+          value={this.state.gyro} />
         }
       </View>
     );
@@ -199,14 +205,14 @@ var Geolocation = React.createClass({
   componentDidMount: function() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        var initialPosition = JSON.stringify(position);
+        var initialPosition = position;
         this.setState({initialPosition});
       },
       (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      var lastPosition = JSON.stringify(position);
+      var lastPosition = JSON.stringify(position.coords);
       this.setState({lastPosition});
     });
   },
@@ -222,10 +228,6 @@ var Geolocation = React.createClass({
         Geolocation
       </Text>
         <Text>
-          <Text style={styles.title}>Initial position: </Text>
-          {this.state.initialPosition}
-        </Text>
-        <Text>
           <Text style={styles.title}>Current position: </Text>
           {this.state.lastPosition}
         </Text>
@@ -237,7 +239,7 @@ var Geolocation = React.createClass({
 class IoTPhone extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      // <View style={styles.container}>
         <ScrollView>
         <Text style={styles.welcome}>
           IoT Phone
@@ -247,7 +249,7 @@ class IoTPhone extends Component {
           <MagnetometerManager></MagnetometerManager>
           <Geolocation></Geolocation>
         </ScrollView>
-      </View>
+      // </View>
     );
   }
 }
