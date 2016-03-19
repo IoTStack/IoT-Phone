@@ -8,6 +8,7 @@
   "dependencies": {
     "react-native": "^0.21.0",
     "react-native-button": "^1.4.2",
-    "react-native-motion-manager": "0.0.6"
+    "react-native-motion-manager": "0.0.6",
+    "react-native-mqtt": "0.1.0-beta4"
   }
 }

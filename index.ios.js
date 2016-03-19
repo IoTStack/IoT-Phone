@@ -15,7 +15,8 @@ import React, {
   DeviceEventEmitter
 } from 'react-native';
 
-var Button = require('react-native-button');
+import mqtt from 'react-native-mqtt';
+var deviceId = '0b149cd1-ca2f-43c1-a853-a501d51e5748';
 
 var {
     Accelerometer,
@@ -23,15 +24,56 @@ var {
     Magnetometer
 } = require('NativeModules');
 
-// Set timing intervals
-Accelerometer.setAccelerometerUpdateInterval(0.1); // in seconds
-Gyroscope.setGyroUpdateInterval(0.1);
-Magnetometer.setMagnetometerUpdateInterval(0.1);
+// Set mqtt connection
 
-// Set updates
-Gyroscope.startGyroUpdates();
-Accelerometer.startAccelerometerUpdates();
-Magnetometer.startMagnetometerUpdates();
+mqtt.createClient({
+  uri: 'mqtts://mqtt.relayr.io:8883',
+  clientId: 'TCxSc0covQ8GoU6UB1R5XSA',
+  user: deviceId,
+  pass: 'pkHIhk-o6R8y',
+  keepalive: 0
+}).then(function(client) {
+
+  alert('client'+ JSON.stringify(client));
+
+  client.on('closed', function(msg) {
+    alert('mqtt.event.closed' + msg);
+
+  });
+
+  client.on('error', function(msg) {
+    alert('mqtt.event.error' + msg);
+
+    console.log('mqtt.event.error', msg);
+
+  });
+
+  client.on('message', function(msg) {
+    alert('msg' + msg)
+    console.log('mqtt.event.message', msg);
+  });
+
+  client.on('connect', function() {
+    alert('connected');
+    client.subscribe("/v1/" + deviceId+ "/cmd", 0);
+
+  });
+
+  client.connect()
+
+}).catch(function(err){
+  alert('error' + err);
+});
+
+// Set timing intervals
+// Accelerometer.setAccelerometerUpdateInterval(0.1); // in seconds
+// Gyroscope.setGyroUpdateInterval(0.1);
+// Magnetometer.setMagnetometerUpdateInterval(0.1);
+
+// // Set updates
+// Accelerometer.startAccelerometerUpdates();
+// Gyroscope.startGyroUpdates();
+// Magnetometer.startMagnetometerUpdates();
 
 var AccelerometerManager = React.createClass({
   getInitialState: function () {
@@ -67,7 +109,6 @@ var AccelerometerManager = React.createClass({
     });
   },
   render: function() {
-    console.log(this.state);
     return (
       <View style={styles.widget}>
         <Text style={styles.welcome}>
@@ -173,7 +214,6 @@ var MagnetometerManager = React.createClass({
     });
   },
   render: function() {
-    console.log(this.state);
     return (
       <View style={styles.widget}>
         <Text style={styles.welcome}>
@@ -244,10 +284,6 @@ class IoTPhone extends Component {
         <Text style={styles.welcome}>
           IoT Phone
         </Text>
-          <AccelerometerManager></AccelerometerManager>
-          <GyroscopeManager></GyroscopeManager>
-          <MagnetometerManager></MagnetometerManager>
-          <Geolocation></Geolocation>
         </ScrollView>
       // </View>
     );
