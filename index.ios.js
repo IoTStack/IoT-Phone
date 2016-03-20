@@ -26,15 +26,22 @@ var {
 
 // Set mqtt connection
 
-mqtt.createClient({
-  uri: 'mqtts://mqtt.relayr.io:8883',
+var iotstack = {
+  host: '172.20.10.7',
+  port: 1883,
+  clientId: 'TCxSc0covQ8GoU6UB1R5XSA'
+};
+
+var relayr = {
+  // uri: 'mqtt://mqtt.relayr.io:1883',
+  host: 'mqtt.relayr.io',
+  port: 1883,
   clientId: 'TCxSc0covQ8GoU6UB1R5XSA',
   user: deviceId,
   pass: 'pkHIhk-o6R8y',
-  keepalive: 0
-}).then(function(client) {
+}
 
-  alert('client'+ JSON.stringify(client));
+mqtt.createClient(relayr).then(function(client) {
 
   client.on('closed', function(msg) {
     alert('mqtt.event.closed' + msg);
@@ -56,6 +63,39 @@ mqtt.createClient({
   client.on('connect', function() {
     alert('connected');
     client.subscribe("/v1/" + deviceId+ "/cmd", 0);
+
+        //simple timer to send a message every 1 second
+        var publisher = setInterval(function(){
+
+
+          var states = [ "heat", "cool", "heat-cool", "off" ];
+          var booleanValues = ["true", "false"];
+          var color = {red:(Math.random() * 255), blue: (Math.random() * 255), green: (Math.random() * 255) };
+
+
+          // publish a message to a topic
+          var data = [JSON.stringify({meaning:"color", value: color}),
+                    JSON.stringify({meaning:"temperature", value: Math.floor((Math.random() * 100) + 1)}),
+                    JSON.stringify({meaning:"temperature", path: 'outdoors', value: Math.floor((Math.random() * 100) + 1)}),
+                    JSON.stringify({meaning:"humidity", value: Math.floor((Math.random() * 100) + 1)}),
+                    JSON.stringify({meaning:"proximity", value: Math.floor((Math.random() * 100) + 1)}),
+                    JSON.stringify({meaning:"luminosity", value: Math.floor((Math.random() * 100) + 1)}),
+                    JSON.stringify({meaning:"noiseLevel", value: Math.floor((Math.random() * 100) + 1)}),
+                    JSON.stringify({meaning:"random number", value: Math.floor((Math.random() * 60) + 1)}),
+                    JSON.stringify({meaning:"random string", value: "Random long long long string with a number aanost euhsnao heuns aoeuhtasnoteh unsahoenustah oenush aontseh unsaoeh uhaoesuh " + Math.floor((Math.random() * 60) + 1)}),
+                    JSON.stringify({meaning:"random percentage", value: Math.floor((Math.random() * 100) + 1)}),
+                    JSON.stringify({meaning:"hvac mode", value: states[Math.floor((Math.random() * 3) + 0)]}),
+                    JSON.stringify({meaning:"fan_timer_active", path:"fan_timer_active", value: Math.floor((Math.random() * 2) + 0) == 1}),
+                    JSON.stringify({meaning:"rssi", value: (Math.random() * 100)}),
+                    JSON.stringify({meaning:"angularSpeed", value: {x: Math.floor((Math.random() * 110)), y: Math.floor((Math.random() * 110)), z: Math.floor((Math.random() * 110)) }}),
+                    JSON.stringify({meaning:"acceleration", value: {x: Math.floor((Math.random() * 11)), y: Math.floor((Math.random() * 11)), z: Math.floor((Math.random() * 11)) }}),
+                    JSON.stringify({"meaning":"error","value":{"errorMessage":'The message is not in json format : \"[{\"meaning\": \"temperature\", \"value\": NaN}, {\"meaning\": \"humidity\", \"value\": 0.0}, {\"meaning\": \"luminance\", \"value\": 242}, {\"meaning\": \"noiseLevel\", \"value\": 2}]\"'}})
+                ];
+
+          data.forEach(function(dataPoint) {
+            client.publish("/v1/" + deviceId + "/data", dataPoint, 0, false);
+          });
+      }, 1000);
 
   });
 
