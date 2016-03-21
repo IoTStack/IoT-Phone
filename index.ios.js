@@ -13,20 +13,21 @@ import React, {
   View,
 } from 'react-native';
 
+import styles from './styles'
 import mqtt from 'react-native-mqtt';
 import AccelerometerManager from './components/accelerometer';
 import GyroscopeManager from './components/gyroscope';
 import MagnetometerManager from './components/magnetometer';
-import GyroscopeManager from './components/geolocation';
+import GeolocationManager from './components/geolocation';
 
 var {
     Magnetometer
 } = require('NativeModules');
 
-var deviceId = '0b149cd1-ca2f-43c1-a853-a501d51e5748';
 var mqttClient;
+var deviceId = '0b149cd1-ca2f-43c1-a853-a501d51e5748';
 
-// Set mqtt connection
+// Mqtt configurations
 
 var iotstack = {
   host: '172.20.10.7',
@@ -35,7 +36,6 @@ var iotstack = {
 };
 
 var relayr = {
-  // uri: 'mqtt://mqtt.relayr.io:1883',
   host: 'mqtt.relayr.io',
   port: 1883,
   clientId: 'TCxSc0covQ8GoU6UB1R5XSA',

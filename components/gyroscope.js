@@ -6,16 +6,14 @@ import React, {
   DeviceEventEmitter
 } from 'react-native';
 
-var {
-    Gyroscope
-} = require('NativeModules');
+var {Gyroscope} = require('NativeModules');
 
 import styles from '../styles'
 
 // Set timing intervals
-Gyroscope.setAccelerometerUpdateInterval(0.3);
+Gyroscope.setGyroUpdateInterval(0.3);
 // Set updates
-Gyroscope.startAccelerometerUpdates();
+Gyroscope.startGyroUpdates();
 
 var GyroscopeManager = React.createClass({
   getInitialState: function () {
@@ -27,7 +25,7 @@ var GyroscopeManager = React.createClass({
     }
   },
   componentDidMount: function () {
-  	
+
   	var mqttClient = this.props.mqttClient;
 
     DeviceEventEmitter.addListener('GyroData', function (data) {

@@ -6,9 +6,7 @@ import React, {
   DeviceEventEmitter
 } from 'react-native';
 
-var {
-    Accelerometer
-} = require('NativeModules');
+var {Magnetometer} = require('NativeModules');
 
 import styles from '../styles'
 

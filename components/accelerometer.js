@@ -6,14 +6,12 @@ import React, {
   DeviceEventEmitter
 } from 'react-native';
 
-var {
-    Accelerometer
-} = require('NativeModules');
+var {Accelerometer} = require('NativeModules');
 
 import styles from '../styles'
 
 // Set timing intervals
-Accelerometer.setAccelerometerUpdateInterval(0.3);
+Accelerometer.setAccelerometerUpdateInterval(1);
 // Set updates
 Accelerometer.startAccelerometerUpdates();
 

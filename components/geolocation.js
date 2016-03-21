@@ -6,6 +6,8 @@ import React, {
   DeviceEventEmitter
 } from 'react-native';
 
+import styles from '../styles'
+
 var GeolocationManager = React.createClass({
   watchID: (null: ?number),
 
