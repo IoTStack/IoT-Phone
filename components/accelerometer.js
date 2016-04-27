@@ -11,7 +11,7 @@ var {Accelerometer} = require('NativeModules');
 import styles from '../styles'
 
 // Set timing intervals
-Accelerometer.setAccelerometerUpdateInterval(1);
+Accelerometer.setAccelerometerUpdateInterval(1000);
 // Set updates
 Accelerometer.startAccelerometerUpdates();
 

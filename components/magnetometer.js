@@ -11,7 +11,7 @@ var {Magnetometer} = require('NativeModules');
 import styles from '../styles'
 
 // Set timing intervals
-Magnetometer.setMagnetometerUpdateInterval(0.3);
+Magnetometer.setMagnetometerUpdateInterval(1000);
  // in seconds
 Magnetometer.startMagnetometerUpdates();
 

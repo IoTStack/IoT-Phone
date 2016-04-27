@@ -11,7 +11,7 @@ var {Gyroscope} = require('NativeModules');
 import styles from '../styles'
 
 // Set timing intervals
-Gyroscope.setGyroUpdateInterval(0.3);
+Gyroscope.setGyroUpdateInterval(1000);
 // Set updates
 Gyroscope.startGyroUpdates();
 
