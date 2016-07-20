@@ -1,7 +1,6 @@
 /**
  * IoT Phone
  * https://github.com/j8/iotphone
- * https://github.com/j8/iotdashboard/iotphone
  */
 'use strict';
 import React, {
