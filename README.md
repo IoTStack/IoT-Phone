@@ -2,7 +2,7 @@
 
 # IoT Phone
 
-IoT Phone is [React Native](https://facebook.github.io/react-native/) app converting your iPhone to fully enabled IoT Device. It sends Accelerometer, Gyroscope, Magnetometer and Geolocation data via MQTT. It can be used as a showcase and playground for many fun apps, such as tracking your location or create own database of tracking data for example. 
+IoT Phone is [React Native](https://facebook.github.io/react-native/) app making your iPhone fully featured IoT Device. It sends Accelerometer, Gyroscope, Magnetometer and Geolocation data via MQTT. It can be used as a showcase and playground for many fun apps, such as tracking your location or create own database of tracking data. 
 
 # Setup
 
