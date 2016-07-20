@@ -8,7 +8,7 @@ import React, {
 
 import styles from '../styles'
 
-var GeolocationManager = React.createClass({
+let GeolocationManager = React.createClass({
   watchID: (null: ?number),
 
   getInitialState: function() {
@@ -32,18 +32,18 @@ var GeolocationManager = React.createClass({
   componentDidMount: function() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        var initialPosition = position;
+        let initialPosition = position;
         this.setState({initialPosition});
       },
       (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      var data = JSON.stringify(position.coords);
-      var mqttClient = this.props.mqttClient;
+      let data = JSON.stringify(position.coords);
+      let mqttClient = this.props.mqttClient;
       
       if(this.state.map) {
-        var mqttData = JSON.stringify({meaning:"geo location", value: data})
+        let mqttData = JSON.stringify({meaning:"geo location", value: data})
         mqttClient.publish("/v1/" + this.props.deviceId + "/data", mqttData, 0, false);
       }
 

@@ -6,7 +6,7 @@ import React, {
   DeviceEventEmitter
 } from 'react-native';
 
-var {Accelerometer} = require('NativeModules');
+let {Accelerometer} = require('NativeModules');
 
 import styles from '../styles'
 
@@ -15,7 +15,7 @@ Accelerometer.setAccelerometerUpdateInterval(1000);
 // Set updates
 Accelerometer.startAccelerometerUpdates();
 
-var AccelerometerManager = React.createClass({
+let AccelerometerManager = React.createClass({
   getInitialState: function () {
     return {
       x: 0,
@@ -26,12 +26,12 @@ var AccelerometerManager = React.createClass({
   },
   componentDidMount: function () {
 
-    var mqttClient = this.props.mqttClient;
+    let mqttClient = this.props.mqttClient;
 
     DeviceEventEmitter.addListener('AccelerationData', function (data) {
 
       if(this.state.gyro) {
-        var mqttData = JSON.stringify({meaning:"accelerometer", value: data})
+        let mqttData = JSON.stringify({meaning:"accelerometer", value: data})
         mqttClient.publish("/v1/" + this.props.deviceId + "/data", mqttData, 0, false);
       }
 

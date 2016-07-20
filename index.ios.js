@@ -20,27 +20,21 @@ import GyroscopeManager from './components/gyroscope';
 import MagnetometerManager from './components/magnetometer';
 import GeolocationManager from './components/geolocation';
 
-var {
+let {
     Magnetometer
 } = require('NativeModules');
 
-var mqttClient;
-var deviceId = '0b149cd1-ca2f-43c1-a853-a501d51e5748';
+let mqttClient;
+let deviceId = 'fc1410b8-64df-4f3b-bcf2-31b4abe0b40b';
 
 // Mqtt configurations
 
-var iotstack = {
-  host: '172.20.10.7',
-  port: 1883,
-  clientId: 'TCxSc0covQ8GoU6UB1R5XSA'
-};
-
-var relayr = {
+let relayr = {
   host: 'mqtt.relayr.io',
   port: 1883,
-  clientId: 'TCxSc0covQ8GoU6UB1R5XSA',
+  clientId: 'T/BQQuGTfTzu88jG0q+C0Cw',
   user: deviceId,
-  pass: 'pkHIhk-o6R8y',
+  pass: 'mPb8AFT0npPe',
 }
 
 mqtt.createClient(relayr).then(function(client) {
